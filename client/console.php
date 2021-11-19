@@ -75,8 +75,9 @@ if (file_exists($config['folder'])) {
 <style>
     .console {
         max-width: 700px;
-        width: 100%;
+        width: calc(100% - 38px);
         margin: 0 auto;
+        min-height: 315px !important;
         text-align: center;
     }
 

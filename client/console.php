@@ -244,20 +244,24 @@ if (file_exists($config['folder'])) {
                 data: {},
                 success: function (res) {
 
-                    button.remove();
+                    setTimeout(function () {
 
-                    $('.start-text').hide();
-                    $('.preload').hide();
+                        button.remove();
 
-                    $('.start-statement').show();
-                    $('.js_countFilesInTask').text(res.count);
-                    $('.loader').show();
+                        $('.start-text').hide();
+                        $('.preload').hide();
 
-                    $('.js_startSize').val(res.sizeNative);
+                        $('.start-statement').show();
+                        $('.js_countFilesInTask').text(res.count);
+                        $('.loader').show();
 
-                    startSize = res.size;
+                        $('.js_startSize').val(res.sizeNative);
 
-                    handle(res);
+                        startSize = res.size;
+
+                        handle(res);
+
+                    }, 1000);
 
                 }
             });

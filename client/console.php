@@ -330,7 +330,7 @@ if (file_exists($config['folder'])) {
 
                                     html += '<div style="color: #555;">' + $('.fileHandledSizeCompression').text() + '</div>';
                                     html += '<div style="color: #555;">' + $('.fileHandledSize').text() + '</div>';
-                                    html += '<img style="width: 30px; margin-top: 20px;" src="/client/img/success.svg">';
+                                    html += '<img style="width: 30px; margin-top: 20px;" src="img/success.svg">';
                                     html += '<div>';
                                     $('.console__content').html(html);
 

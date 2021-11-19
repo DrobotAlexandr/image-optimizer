@@ -29,8 +29,6 @@ if (!$noHandle) {
     );
 }
 
-$file = strtr($res['src']['local'], ['/upload/' => '']);
-
 $size = false;
 
 if ($_GET['getSize']) {
@@ -49,7 +47,7 @@ if ($size['size']) {
 
 $res = [
     'status' => 'ok',
-    'file' => $file,
+    'file' => $res['src']['local'],
     'size' => $size
 ];
 

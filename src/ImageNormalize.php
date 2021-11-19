@@ -13,6 +13,15 @@ Class ImageNormalize
             return $validate;
         }
 
+        $config = '../../config.php';
+
+        if (file_exists($config)) {
+            $params['config'] = include $config;
+        } else {
+            $params['config']['qualityOptimizations'] = true;
+        }
+
+
         self::normalize__createImage($params);
 
         self::normalize__optimize($params);
@@ -71,6 +80,10 @@ Class ImageNormalize
 
     private static function normalize__optimize($params)
     {
+        if (!$params['config']['qualityOptimizations']) {
+            return false;
+        }
+
         $optimizer = new ImageOptimizer;
 
         $optimizer->cached_image_directory = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
@@ -90,7 +103,9 @@ Class ImageNormalize
 
         $size = 1920;
 
-        if ($params['mode'] == 'lite') {
+        if ($params['config']['maxImageSizePx']) {
+            $size = $params['config']['maxImageSizePx'];
+        } else if ($params['mode'] == 'lite') {
             $size = 700;
         }
 

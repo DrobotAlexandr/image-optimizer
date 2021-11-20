@@ -387,8 +387,6 @@ class ImageOptimizer
     private function set_file_mime_type()
     {
         $image_type = exif_imagetype($this->image_src);
-        if (!$image_type)
-            $this->error('The file you supplied isn\'t a valid image.');
         $this->file_mime_type = image_type_to_mime_type($image_type);
         $this->file_extension = image_type_to_extension($image_type, false);
     }

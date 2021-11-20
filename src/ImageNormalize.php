@@ -86,7 +86,7 @@ Class ImageNormalize
 
         $optimizer = new ImageOptimizer;
 
-        $optimizer->cached_image_directory = $_SERVER['DOCUMENT_ROOT'] . '/upload/';
+        $optimizer->cached_image_directory = $params['config']['folder'];
 
         $optimizer->optimize($params['src']);
     }

@@ -1,7 +1,5 @@
 <?php
 
-header('Content-type: text/html; charset=utf-8');
-
 $config = include '../config.php';
 
 $isUpload = false;
@@ -310,61 +308,68 @@ if (file_exists($config['folder'])) {
                         },
                         success: function (handleRes) {
                             sendRequest(count, pos);
-                            $('.js_countFilesInTask').text(allCount);
-
-                            percent = 100 / (count / pos);
-
-                            $('.loader-line').css(
-                                {
-                                    'width': percent + '%'
-                                }
-                            );
-
-                            $('.preview img').attr('src', handleRes.file);
-                            $('.preview').show();
-
-                            $('.fileHandled').text(handleRes.file);
-
-                            if (percent) {
-                                $('.loader-line').text(Math.round(percent) + '%');
-                            }
-
-                            if (Math.round(percent) === 100) {
-                                setTimeout(function () {
-                                    var html = '<div>';
-
-                                    html += '<div style="font-size: 22px; margin: 40px 0 20px 0;">Оптимизация успешно проведена!</div>';
-
-                                    html += '<div style="color: #555;">' + $('.fileHandledSizeCompression').text() + '</div>';
-                                    html += '<div style="color: #555;">' + $('.fileHandledSize').text() + '</div>';
-                                    html += '<img style="width: 30px; margin-top: 20px;" src="img/success.svg">';
-                                    html += '<div>';
-                                    $('.console__content').html(html);
-
-                                }, 1000);
-                            }
-
-                            if (handleRes.size) {
-                                $('.fileHandledSize').text('Занятое место: ' + handleRes.size.sizeFormat);
-                                $('.js_endSize').val(handleRes.size.size);
-
-                                if (handleRes.size.size && startSize) {
-                                    percent = 100 - 100 / (Number($('.js_startSize').val()) / Number(handleRes.size.size));
-                                } else {
-                                    percent = 1;
-                                }
-
-                                percent = Math.round(percent);
-
-                                if (percent === 0 || percent >= 100) {
-                                    percent = 1;
-                                }
-
-                                $('.fileHandledSizeCompression').text('Сжатие: ' + percent + '%');
-                            }
-
+                            res(allCount, count, pos, handleRes);
+                        },
+                        error: function (handleRes) {
+                            sendRequest(count, pos);
                         }
                     });
+
+                    function res(allCount, count, pos, handleRes) {
+                        $('.js_countFilesInTask').text(allCount);
+
+                        percent = 100 / (count / pos);
+
+                        $('.loader-line').css(
+                            {
+                                'width': percent + '%'
+                            }
+                        );
+
+                        $('.preview img').attr('src', handleRes.file);
+                        $('.preview').show();
+
+                        $('.fileHandled').text(handleRes.file);
+
+                        if (percent) {
+                            $('.loader-line').text(Math.round(percent) + '%');
+                        }
+
+                        if (Math.round(percent) === 100) {
+                            setTimeout(function () {
+                                var html = '<div>';
+
+                                html += '<div style="font-size: 22px; margin: 40px 0 20px 0;">Оптимизация успешно проведена!</div>';
+
+                                html += '<div style="color: #555;">' + $('.fileHandledSizeCompression').text() + '</div>';
+                                html += '<div style="color: #555;">' + $('.fileHandledSize').text() + '</div>';
+                                html += '<img style="width: 30px; margin-top: 20px;" src="img/success.svg">';
+                                html += '<div>';
+                                $('.console__content').html(html);
+
+                            }, 1000);
+                        }
+
+                        if (handleRes.size) {
+                            $('.fileHandledSize').text('Занятое место: ' + handleRes.size.sizeFormat);
+                            $('.js_endSize').val(handleRes.size.size);
+
+                            if (handleRes.size.size && startSize) {
+                                percent = 100 - 100 / (Number($('.js_startSize').val()) / Number(handleRes.size.size));
+                            } else {
+                                percent = 1;
+                            }
+
+                            percent = Math.round(percent);
+
+                            if (percent === 0 || percent >= 100) {
+                                percent = 1;
+                            }
+
+                            $('.fileHandledSizeCompression').text('Сжатие: ' + percent + '%');
+                        }
+                    }
+
                 }
             }
 

@@ -104,7 +104,7 @@ class ImageOptimizer
     public function __construct($options = array())
     {
         if (!$this->can_run_image_cache())
-           // $this->error('PHP Image Cache must be run on a server with a bundled GD version.');
+            $this->error('PHP Image Cache must be run on a server with a bundled GD version.');
         $defaults = array(
             'check_link_cached' => true, // Check link of cached file if is valid by curl
             'echo' => false, // Determines whether the resulting source should be echoed or returned
@@ -156,10 +156,10 @@ class ImageOptimizer
     {
         ob_start();
         if (!is_writable($this->cached_image_directory))
-           // $this->error($this->cached_image_directory . ' must writable!');
+            $this->error($this->cached_image_directory . ' must writable!');
 
         if (!is_string($image))
-           // $this->error('Image source given must be a string.');
+            $this->error('Image source given must be a string.');
 
         $this->image_src = $image;
         $this->image_src_version = $version;
@@ -189,7 +189,7 @@ class ImageOptimizer
         $image_location = dirname($this->cached_image_directory) . '/' . $basename;
         if (!file_exists($image_location)) {
             if (!file_put_contents($image_location, $image_resource)) {
-               // $this->error('Could not download the remote image');
+                $this->error('Could not download the remote image');
             }
         }
         $this->image_src = $image_location;
@@ -208,7 +208,7 @@ class ImageOptimizer
         try {
             mkdir($this->cached_image_directory);
         } catch (Exception $e) {
-           // $this->error('There was an error creating the new directory:', $e);
+            $this->error('There was an error creating the new directory:', $e);
             return false;
         }
         return true;
@@ -233,7 +233,7 @@ class ImageOptimizer
             $image_src_func = 'imagecreatefrom' . $this->file_extension;
             $image_create_func = 'image' . $this->file_extension;
         } else {
-            //$this->error('The image you supply must have a .gif, .jpg/.jpeg, or .png extension.');
+            $this->error('The image you supply must have a .gif, .jpg/.jpeg, or .png extension.');
             return false;
         }
 
@@ -291,7 +291,7 @@ class ImageOptimizer
             $image_url = $this->cached_image_url . "/" . basename($src);
         }
         if ($this->link_is_broken($image_url)) {
-            //$this->error('Final image URL is broken');
+            $this->error('Final image URL is broken');
         }
         return $image_url;
     }
@@ -387,6 +387,8 @@ class ImageOptimizer
     private function set_file_mime_type()
     {
         $image_type = exif_imagetype($this->image_src);
+        if (!$image_type)
+            $this->error('The file you supplied isn\'t a valid image.');
         $this->file_mime_type = image_type_to_mime_type($image_type);
         $this->file_extension = image_type_to_extension($image_type, false);
     }

@@ -52,7 +52,7 @@ try {
 
 } catch (Throwable  $t) {
 
-    $error = $t->getMessage()
+    $error = $t->getMessage();
 
 }
 

@@ -34,7 +34,7 @@ class SimpleImage
             // Ignore JPEG warnings that cause imagecreatefromjpeg() to fail
             ini_set('gd.jpeg_ignore_warning', 1);
         } else {
-            throw new \Exception('Required extension GD is not loaded.', self::ERR_GD_NOT_ENABLED);
+           // throw new \Exception('Required extension GD is not loaded.', self::ERR_GD_NOT_ENABLED);
         }
 
         // Load an image through the constructor
@@ -71,23 +71,23 @@ class SimpleImage
         // Basic formatting check
         preg_match('/^data:(.*?);/', $uri, $matches);
         if (!count($matches)) {
-            throw new \Exception('Invalid data URI.', self::ERR_INVALID_DATA_URI);
+           // throw new \Exception('Invalid data URI.', self::ERR_INVALID_DATA_URI);
         }
 
         // Determine mime type
         $this->mimeType = $matches[1];
         if (!preg_match('/^image\/(gif|jpeg|png)$/', $this->mimeType)) {
-            throw new \Exception(
+            /*throw new \Exception(
                 'Unsupported format: ' . $this->mimeType,
                 self::ERR_UNSUPPORTED_FORMAT
-            );
+            );*/
         }
 
         // Get image data
         $uri = base64_decode(preg_replace('/^data:(.*?);base64,/', '', $uri));
         $this->image = imagecreatefromstring($uri);
         if (!$this->image) {
-            throw new \Exception("Invalid image data.", self::ERR_INVALID_IMAGE);
+          //  throw new \Exception("Invalid image data.", self::ERR_INVALID_IMAGE);
         }
 
         return $this;
@@ -106,14 +106,14 @@ class SimpleImage
         // because not all URL wrappers support the latter.
         $handle = @fopen($file, 'r');
         if ($handle === false) {
-            throw new \Exception("File not found: $file", self::ERR_FILE_NOT_FOUND);
+           // throw new \Exception("File not found: $file", self::ERR_FILE_NOT_FOUND);
         }
         fclose($handle);
 
         // Get image info
         $info = getimagesize($file);
         if ($info === false) {
-            throw new \Exception("Invalid image file: $file", self::ERR_INVALID_IMAGE);
+           // throw new \Exception("Invalid image file: $file", self::ERR_INVALID_IMAGE);
         }
         $this->mimeType = $info['mime'];
 
@@ -146,7 +146,7 @@ class SimpleImage
                 break;
         }
         if (!$this->image) {
-            throw new \Exception("Unsupported image: $file", self::ERR_UNSUPPORTED_FORMAT);
+            //throw new \Exception("Unsupported image: $file", self::ERR_UNSUPPORTED_FORMAT);
         }
 
         // Convert pallete images to true color images
@@ -238,16 +238,16 @@ class SimpleImage
             case 'image/webp':
                 // Not all versions of PHP will have webp support enabled
                 if (!function_exists('imagewebp')) {
-                    throw new \Exception(
+                  /*  throw new \Exception(
                         'WEBP support is not enabled in your version of PHP.',
                         self::ERR_WEBP_NOT_ENABLED
-                    );
+                    );*/
                 }
                 imagesavealpha($this->image, true);
                 imagewebp($this->image, null, $quality);
                 break;
             default:
-                throw new \Exception('Unsupported format: ' . $mimeType, self::ERR_UNSUPPORTED_FORMAT);
+               // throw new \Exception('Unsupported format: ' . $mimeType, self::ERR_UNSUPPORTED_FORMAT);
         }
 
         // Stop capturing
@@ -867,10 +867,10 @@ class SimpleImage
     {
         // Check for freetype support
         if (!function_exists('imagettftext')) {
-            throw new \Exception(
+          /*  throw new \Exception(
                 'Freetype support is not enabled in your version of PHP.',
                 self::ERR_FREETYPE_NOT_ENABLED
-            );
+            );*/
         }
 
         // Default options
@@ -907,7 +907,7 @@ class SimpleImage
         //
         $box = imagettfbbox($size, $angle, $fontFile, $text);
         if (!$box) {
-            throw new \Exception("Unable to load font file: $fontFile", self::ERR_FONT_FILE);
+           // throw new \Exception("Unable to load font file: $fontFile", self::ERR_FONT_FILE);
         }
         $boxWidth = abs($box[6] - $box[2]);
         $boxHeight = $options['size'];
@@ -1663,10 +1663,10 @@ class SimpleImage
     {
         // Check for required library
         if (!class_exists('\League\ColorExtractor\ColorExtractor')) {
-            throw new \Exception(
+           /* throw new \Exception(
                 'Required library \League\ColorExtractor is missing.',
                 self::ERR_LIB_NOT_LOADED
-            );
+            );*/
         }
 
         // Convert background color to an integer value
@@ -1830,7 +1830,7 @@ class SimpleImage
                     $hex[4] . $hex[5]
                 ];
             } else {
-                throw new \Exception("Invalid color value: $color", self::ERR_INVALID_COLOR);
+             //   throw new \Exception("Invalid color value: $color", self::ERR_INVALID_COLOR);
             }
 
             // Turn color into an array
@@ -1860,7 +1860,7 @@ class SimpleImage
             ];
         }
 
-        throw new \Exception("Invalid color value: $color", self::ERR_INVALID_COLOR);
+       // throw new \Exception("Invalid color value: $color", self::ERR_INVALID_COLOR);
     }
 
 }

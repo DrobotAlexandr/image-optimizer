@@ -21,12 +21,14 @@ if ($config['exceptionMasks']) {
 }
 
 if (!$noHandle) {
-    $res = ImageNormalize::normalize(
-        [
-            'src' => $task['task'],
-            'mode' => 'lite',
-        ]
-    );
+    if (file_exists($task['task'])) {
+        $res = ImageNormalize::normalize(
+            [
+                'src' => $task['task'],
+                'mode' => 'lite',
+            ]
+        );
+    }
 }
 
 $size = false;
